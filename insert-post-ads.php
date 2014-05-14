@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Insert Post Ads
 * Plugin URI: http://www.wpbeginner.com/
-* Version: 1.0
+* Version: 1.0.1
 * Author: WPBeginner
 * Author URI: http://www.wpbeginner.com/
 * Description: Allows you to insert ads after paragraphs of your post content
@@ -31,7 +31,7 @@
 * @package WPBeginner
 * @subpackage Insert Post Ads
 * @author Tim Carr
-* @version 1.0
+* @version 1.0.1
 * @copyright WPBeginner
 */
 class InsertPostAds {
@@ -44,7 +44,7 @@ class InsertPostAds {
         $this->plugin->name = 'insert-post-ads'; // Plugin Folder
         $this->plugin->displayName = 'Post Adverts'; // Plugin Name
         $this->plugin->posttype = 'insertpostads';
-        $this->plugin->version = '1.0';
+        $this->plugin->version = '1.0.1';
         $this->plugin->folder = WP_PLUGIN_DIR.'/'.$this->plugin->name; // Full Path to Plugin Folder
         $this->plugin->url = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
         

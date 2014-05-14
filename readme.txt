@@ -3,7 +3,7 @@ Contributors: WPbeginner, smub, iamdpegg, n7studios
 Donate link:http://www.wpbeginner.com/wpbeginner-needs-your-help/
 Tags: ads, adsense, google adsense, insert ads in post, wordpress ads plugin, wp125, adrotate, advertising plugin, banners plugin, post ads, insert post ads
 Requires at least: 3.6
-Tested up to: 3.9
+Tested up to: 3.9.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -45,6 +45,9 @@ Lastly, if you like this plugin then follow WPBeginner on <a href="http://twitte
 
 
 == Changelog ==
+
+= 1.0.1 =
+* Added Simplified Chinese language translations (props: Changmeng Hu)
 
 = 1.0 =
 * First release
