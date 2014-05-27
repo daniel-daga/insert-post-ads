@@ -1,7 +1,7 @@
 === Insert Post Ads ===
 Contributors: WPbeginner, smub, iamdpegg, n7studios
 Donate link:http://www.wpbeginner.com/wpbeginner-needs-your-help/
-Tags: ads, adsense, google adsense, insert ads in post, wordpress ads plugin, wp125, adrotate, advertising plugin, banners plugin, post ads, insert post ads
+Tags: ads, adsense, google adsense, insert ads in post, wordpress ads plugin, advertising plugin, banners plugin, post ads, insert post ads
 Requires at least: 3.6
 Tested up to: 3.9.1
 Stable tag: trunk
@@ -45,6 +45,10 @@ Lastly, if you like this plugin then follow WPBeginner on <a href="http://twitte
 
 
 == Changelog ==
+
+= 1.0.2 =
+* Removed: readme.txt tags
+* Fix: Content not outputting when no Post Adverts defined
 
 = 1.0.1 =
 * Added Simplified Chinese language translations (props: Changmeng Hu)

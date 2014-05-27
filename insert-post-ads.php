@@ -247,10 +247,10 @@ class InsertPostAds {
 		// Settings
 		$this->settings = get_option($this->plugin->name);
 		if (!is_array($this->settings)) {
-			return;
+			return $content;
 		}
 		if (count($this->settings) == 0) {
-			return;
+			return $content;
 		}
 		
 		// Check if we are on a singular post type that's enabled
