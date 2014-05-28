@@ -19,11 +19,11 @@
     		<!-- Content -->
     		<div id="post-body-content">
 				<div id="normal-sortables" class="meta-box-sortables ui-sortable">                        
-	                <div class="postbox">
-	                    <h3 class="hndle"><?php _e('Where do you want ads to display?', $this->plugin->name); ?></h3>
-	                    
-	                    <div class="inside">
-		                    <form action="edit.php?post_type=<?php echo $this->plugin->posttype; ?>&page=<?php echo $this->plugin->name; ?>" method="post">
+	                <form action="edit.php?post_type=<?php echo $this->plugin->posttype; ?>&page=<?php echo $this->plugin->name; ?>" method="post">
+		                <div class="postbox">
+		                    <h3 class="hndle"><?php _e('Where do you want ads to display?', $this->plugin->name); ?></h3>
+		                    
+		                    <div class="inside">		                    
 		                    	<p>
 									<?php
 									$postTypes = get_post_types(array(
@@ -42,15 +42,33 @@
 										}
 									}
 									?>
-								</p>  
+								</p> 
+								<p>
+									<input name="submit" type="submit" name="Submit" class="button button-primary" value="<?php _e('Save Settings', $this->plugin->name); ?>" /> 
+								</p>
+		                    </div>
+		                </div>
+		                <!-- /postbox -->
+		                
+		                <div class="postbox">
+		                    <h3 class="hndle"><?php _e('Display Styling', $this->plugin->name); ?></h3>
+		                    
+		                    <div class="inside">
+		                   		<p>
+									<label for="css"><?php _e('Exclude CSS', $this->plugin->name) ;?></label>
+									<input type="checkbox" name="<?php echo $this->plugin->name; ?>[css]" value="1" id="css" <?php echo (isset($this->settings['css']) ? ' checked' : ''); ?>/>	
+								</p>
+								<p class="description">
+									<?php _e('By default, Post Ads are wrapped in a container that has some CSS to aid layout. Developers may wish to use their own CSS, and should check this Exclude CSS option.', $this->plugin->name); ?>
+								</p>
 								                    
 								<p>
-									<input name="submit" type="submit" name="Submit" class="button button-primary" value="Save settings" /> 
+									<input name="submit" type="submit" name="Submit" class="button button-primary" value="<?php _e('Save Settings', $this->plugin->name); ?>" /> 
 								</p>
-						    </form>
-	                    </div>
-	                </div>
-	                <!-- /postbox -->
+		                    </div>
+		                </div>
+		                <!-- /postbox -->
+	                </form>
 	                
 	                <div id="wpbeginner" class="postbox">
 	                    <h3 class="hndle"><?php _e('Latest from WPBeginner', $this->plugin->name); ?></h3>

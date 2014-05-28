@@ -46,6 +46,11 @@ Lastly, if you like this plugin then follow WPBeginner on <a href="http://twitte
 
 == Changelog ==
 
+= 1.0.3 =
+* Added: Option to exclude inline CSS on adverts
+* Added: .insert-post-ads class on advert containers
+* Added: Post/Page/CPT specific advert exclusion option
+
 = 1.0.2 =
 * Removed: readme.txt tags
 * Fix: Content not outputting when no Post Adverts defined

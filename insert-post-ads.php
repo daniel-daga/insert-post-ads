@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Insert Post Ads
 * Plugin URI: http://www.wpbeginner.com/
-* Version: 1.0.1
+* Version: 1.0.3
 * Author: WPBeginner
 * Author URI: http://www.wpbeginner.com/
 * Description: Allows you to insert ads after paragraphs of your post content
@@ -31,7 +31,7 @@
 * @package WPBeginner
 * @subpackage Insert Post Ads
 * @author Tim Carr
-* @version 1.0.1
+* @version 1.0.3
 * @copyright WPBeginner
 */
 class InsertPostAds {
@@ -44,7 +44,7 @@ class InsertPostAds {
         $this->plugin->name = 'insert-post-ads'; // Plugin Folder
         $this->plugin->displayName = 'Post Adverts'; // Plugin Name
         $this->plugin->posttype = 'insertpostads';
-        $this->plugin->version = '1.0.1';
+        $this->plugin->version = '1.0.3';
         $this->plugin->folder = WP_PLUGIN_DIR.'/'.$this->plugin->name; // Full Path to Plugin Folder
         $this->plugin->url = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
         
@@ -118,6 +118,24 @@ class InsertPostAds {
     function adminPanelsAndMetaBoxes() {
         add_submenu_page('edit.php?post_type='.$this->plugin->posttype, __('Settings', $this->plugin->name), __('Settings', $this->plugin->name), 'manage_options', $this->plugin->name, array(&$this, 'adminPanel'));
 		add_meta_box('ipa_meta', __('Advert Code', $this->plugin->name), array( &$this, 'displayMetaBox'), $this->plugin->posttype, 'normal', 'high');
+		$postTypes = get_post_types(array(
+			'public' => true,
+		), 'objects');
+		if ($postTypes) {
+			foreach ($postTypes as $postType) {
+				// Skip attachments
+				if ($postType->name == 'attachment') {
+					continue;
+				}
+				
+				// Skip our CPT
+				if ($postType->name == $this->plugin->posttype) {
+					continue;
+				}
+				add_meta_box('ipa_meta', __($this->plugin->displayName, $this->plugin->name), array( &$this, 'displayOptionsMetaBox'), $postType->name, 'normal', 'high');
+			}
+		}
+		
     }
     
     /**
@@ -175,6 +193,28 @@ class InsertPostAds {
 	}
 	
 	/**
+	* Displays the meta box on Pages, Posts and CPTs
+	*
+	* @param object $post Post
+	*/
+	function displayOptionsMetaBox($post) {
+		// Get meta
+		$disable = get_post_meta($post->ID, '_ipa_disable_ads', true);
+		
+		// Nonce field
+		wp_nonce_field($this->plugin->name, $this->plugin->name.'_nonce');
+		?>
+		<p>
+			<label for="ipa_disable_ads"><?php _e('Disable Adverts', $this->plugin->name); ?></label>
+			<input type="checkbox" name="ipa_disable_ads" id="ipa_disable_ads" value="1"<?php echo ($disable ? ' checked' : ''); ?> />
+		</p>
+		<p class="description">
+			<?php _e('Check this option if you wish to disable all Post Ads from displaying on this content.', $this->plugin->name); ?>
+		</p>
+		<?php
+	}
+	
+	/**
 	* Saves the meta box field data
 	*
 	* @param int $post_id Post ID
@@ -190,19 +230,24 @@ class InsertPostAds {
 			return $post_id;
 		}
 		
-		// Check this is the Ad Custom Post Type
-		if ($_POST['post_type'] != $this->plugin->posttype) {
-			return $post_id;
-		}
-	    
 		// Check the logged in user has permission to edit this post
 		if (!current_user_can('edit_post', $post_id)) {
 			return $post_id;
 		}
 	    
 		// OK to save meta data
-		update_post_meta($post_id, '_ad_code', $_POST['ad_code']);
-		update_post_meta($post_id, '_paragraph_number', $_POST['paragraph_number']);
+		if (isset($_POST['ipa_disable_ads'])) {
+			update_post_meta($post_id, '_ipa_disable_ads', $_POST['ipa_disable_ads']);	
+		} else {
+			delete_post_meta($post_id, '_ipa_disable_ads');
+		}
+		
+		if (isset($_POST['ad_code'])) {
+			update_post_meta($post_id, '_ad_code', $_POST['ad_code']);
+		}
+		if (isset($_POST['paragraph_number'])) {
+			update_post_meta($post_id, '_paragraph_number', $_POST['paragraph_number']);
+		}
 	}
 	
 	/**
@@ -256,7 +301,11 @@ class InsertPostAds {
 		// Check if we are on a singular post type that's enabled
 		foreach ($this->settings as $postType=>$enabled) {
 			if (is_singular($postType)) {
-				return $this->insertAds($content);
+				// Check the post hasn't disabled adverts
+				$disable = get_post_meta($post->ID, '_ipa_disable_ads', true);
+				if (!$disable) {
+					return $this->insertAds($content);
+				}
 			}
 		}
 		
@@ -313,7 +362,7 @@ class InsertPostAds {
 
 			// + 1 allows for considering the first paragraph as #1, not #0.
 			if ( $paragraph_id == $index + 1 ) {
-				$paragraphs[$index] .= '<div style="clear:both;float:left;width:100%;margin:0 0 20px 0;">'. $insertion .'</div>';
+				$paragraphs[$index] .= '<div class="'.$this->plugin->name.'"'.(isset($this->settings['css']) ? '' : ' style="clear:both;float:left;width:100%;margin:0 0 20px 0;"').'>'. $insertion .'</div>';
 			}
 		}
 		return implode( '', $paragraphs );
