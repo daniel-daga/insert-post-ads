@@ -3,7 +3,7 @@ Contributors: WPbeginner, smub, iamdpegg, n7studios
 Donate link:http://www.wpbeginner.com/wpbeginner-needs-your-help/
 Tags: ads, adsense, google adsense, insert ads in post, wordpress ads plugin, advertising plugin, banners plugin, post ads, insert post ads
 Requires at least: 3.6
-Tested up to: 3.9.1
+Tested up to: 4.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -45,6 +45,10 @@ Lastly, if you like this plugin then follow WPBeginner on <a href="http://twitte
 
 
 == Changelog ==
+
+= 1.0.4 =
+* Added: New options to position advert before content or after content
+* Added: WordPress 4.0 compatibility
 
 = 1.0.3 =
 * Added: Option to exclude inline CSS on adverts

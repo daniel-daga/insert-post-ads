@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Insert Post Ads
 * Plugin URI: http://www.wpbeginner.com/
-* Version: 1.0.3
+* Version: 1.0.4
 * Author: WPBeginner
 * Author URI: http://www.wpbeginner.com/
 * Description: Allows you to insert ads after paragraphs of your post content
@@ -27,12 +27,6 @@
 
 /**
 * Insert Post Ads Class
-* 
-* @package WPBeginner
-* @subpackage Insert Post Ads
-* @author Tim Carr
-* @version 1.0.3
-* @copyright WPBeginner
 */
 class InsertPostAds {
 	/**
@@ -44,7 +38,7 @@ class InsertPostAds {
         $this->plugin->name = 'insert-post-ads'; // Plugin Folder
         $this->plugin->displayName = 'Post Adverts'; // Plugin Name
         $this->plugin->posttype = 'insertpostads';
-        $this->plugin->version = '1.0.3';
+        $this->plugin->version = '1.0.4';
         $this->plugin->folder = WP_PLUGIN_DIR.'/'.$this->plugin->name; // Full Path to Plugin Folder
         $this->plugin->url = WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
         
@@ -174,10 +168,8 @@ class InsertPostAds {
 	function displayMetaBox($post) {
 		// Get meta
 		$adCode = get_post_meta($post->ID, '_ad_code', true);
+		$adPosition = get_post_meta($post->ID, '_ad_position', true);
 		$paragraphNumber = get_post_meta($post->ID, '_paragraph_number', true);
-		if (empty($paragraphNumber)) {
-			$paragraphNumber = 1;
-		}
 		
 		// Nonce field
 		wp_nonce_field($this->plugin->name, $this->plugin->name.'_nonce');
@@ -186,7 +178,12 @@ class InsertPostAds {
 			<textarea name="ad_code" id="ad_code" style="width: 100%; height: 100px; font-family: Courier; font-size: 12px;"><?php echo $adCode; ?></textarea>
 		</p>
 		<p>
-			<label for="paragraph_number"><?php _e('Display the advert after which paragraph:', $this->plugin->name); ?></label>
+			<label for="ad_position"><?php _e('Display the advert:', $this->plugin->name); ?></label>
+			<select name="ad_position" size="1">
+				<option value="top"<?php echo (($adPosition == 'top') ? ' selected' : ''); ?>><?php _e('Before Content', $this->plugin->name); ?></option>
+				<option value=""<?php echo (($adPosition == '') ? ' selected' : ''); ?>><?php _e('After Paragraph Number', $this->plugin->name); ?></option>
+				<option value="bottom"<?php echo (($adPosition == 'bottom') ? ' selected' : ''); ?>><?php _e('After Content', $this->plugin->name); ?></option>
+			</select>
 			<input type="number" name="paragraph_number" value="<?php echo $paragraphNumber; ?>" min="1" max="999" step="1" id="paragraph_number" />
 		</p>
 		<?php
@@ -244,6 +241,9 @@ class InsertPostAds {
 		
 		if (isset($_POST['ad_code'])) {
 			update_post_meta($post_id, '_ad_code', $_POST['ad_code']);
+		}
+		if (isset($_POST['ad_position'])) {
+			update_post_meta($post_id, '_ad_position', $_POST['ad_position']);
 		}
 		if (isset($_POST['paragraph_number'])) {
 			update_post_meta($post_id, '_paragraph_number', $_POST['paragraph_number']);
@@ -330,9 +330,20 @@ class InsertPostAds {
 				
 				$adID = get_the_ID();
 				$adCode = get_post_meta($adID, '_ad_code', true);
+				$adPosition = get_post_meta($adID, '_ad_position', true);
 				$paragraphNumber = get_post_meta($adID, '_paragraph_number', true);
 				
-				$content = $this->insertAdAfterParagraph($adCode, $paragraphNumber , $content);
+				switch ($adPosition) {
+					case 'top':
+						$content = $adCode.$content;
+						break;
+					case 'bottom':
+						$content = $content.$adCode;
+						break;
+					default:
+						$content = $this->insertAdAfterParagraph($adCode, $paragraphNumber , $content);
+						break;
+				}
 			}
 		}
 		
