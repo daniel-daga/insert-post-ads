@@ -3,7 +3,7 @@ Contributors: WPbeginner, smub, iamdpegg, n7studios
 Donate link:http://www.wpbeginner.com/wpbeginner-needs-your-help/
 Tags: ads, adsense, google adsense, insert ads in post, wordpress ads plugin, advertising plugin, banners plugin, post ads, insert post ads
 Requires at least: 3.6
-Tested up to: 4.0
+Tested up to: 4.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -45,6 +45,10 @@ Lastly, if you like this plugin then follow WPBeginner on <a href="http://twitte
 
 
 == Changelog ==
+
+= 1.0.5 =
+* Tested with WordPress 4.3
+* Fix: plugin_dir_path() and plugin_dir_url() used for Multisite / symlink support
 
 = 1.0.4 =
 * Added: New options to position advert before content or after content
