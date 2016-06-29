@@ -29,6 +29,9 @@
 * Insert Post Ads Class
 */
 class InsertPostAds {
+
+  public $paragraphAdArray = array();
+
 	/**
 	* Constructor
 	*/
@@ -36,7 +39,7 @@ class InsertPostAds {
 
 		// Plugin Details
         $this->plugin               = new stdClass;
-        $this->plugin->name         = 'insert-post-ads-dg-fork'; // Plugin Folder
+        $this->plugin->name         = 'insert-post-ads'; // Plugin Folder
         $this->plugin->displayName  = 'Post Adverts - DG Fork'; // Plugin Name
         $this->plugin->posttype 	= 'insertpostads';
         $this->plugin->version      = '1.0.0';
@@ -320,12 +323,14 @@ class InsertPostAds {
 	* @return string Content
 	*/
 	function insertAds($content) {
+
 		$ads = new WP_Query(array(
 			'post_type' => $this->plugin->posttype,
 			'post_status' => 'publish',
 			'posts_per_page' => -1,
 		));
 		if ($ads->have_posts()) {
+      $paragraphs = array();
 			while ($ads->have_posts()) {
 				$ads->the_post();
 
@@ -342,10 +347,18 @@ class InsertPostAds {
 						$content = $content.$adCode;
 						break;
 					default:
-						$content = $this->insertAdAfterParagraph($adCode, $paragraphNumber , $content);
+            $paragraphs[$paragraphNumber][] = $adCode;
+						// $content = $this->insertAdAfterParagraph($adCode, $paragraphNumber, $content);
 						break;
 				}
 			}
+
+      if ( ! empty( $paragraphs ) ) {
+        foreach( $paragraphs as $paragraphNumber => $adCode_array ) {
+          $adCode = $adCode_array[ rand(0, ( count($adCode_array) - 1 ) ) ];
+          $content = $this->insertAdAfterParagraph($adCode, $paragraphNumber, $content);
+        }
+      }
 		}
 
 		wp_reset_postdata();
@@ -364,6 +377,7 @@ class InsertPostAds {
 	function insertAdAfterParagraph( $insertion, $paragraph_id, $content ) {
 		$closing_p = '</p>';
 		$paragraphs = explode( $closing_p, $content );
+
 		foreach ($paragraphs as $index => $paragraph) {
 			// Only add closing tag to non-empty paragraphs
 			if ( trim( $paragraph ) ) {
@@ -374,6 +388,7 @@ class InsertPostAds {
 
 			// + 1 allows for considering the first paragraph as #1, not #0.
 			if ( $paragraph_id == $index + 1 ) {
+
 				$paragraphs[$index] .= '<div class="'.$this->plugin->name.'"'.(isset($this->settings['css']) ? '' : ' style="clear:both;float:left;width:100%;margin:0 0 20px 0;"').'>'. $insertion .'</div>';
 			}
 		}
