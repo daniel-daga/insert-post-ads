@@ -12,7 +12,9 @@ Allows you to insert ads after paragraphs of your post content.
 
 == Description ==
 
-Content ads get the best click through rate. If you want to increase your CTR and Google AdSense revenue, then you need to start adding ads within your post content. 
+Forked to allow randomized post ads
+
+Content ads get the best click through rate. If you want to increase your CTR and Google AdSense revenue, then you need to start adding ads within your post content.
 
 Insert Post ads allow you to automatically insert ads after paragraphs of your post content. This saves you the hassle of manually entering ads in each of your post. This plugin is based on our article about <a href="http://www.wpbeginner.com/wp-tutorials/how-to-insert-ads-within-your-post-content-in-wordpress/" title="How to Insert Ads within your Post Content in WordPress" rel="friend">how to insert ads within your post content in WordPress</a>.
 
@@ -20,7 +22,7 @@ If you like this plugin and want to learn more about WordPress, then I suggest t
 
 I often get asked what are the <a href="http://www.wpbeginner.com/category/plugins/" title="best WordPress plugins" rel="friend">best WordPress plugins</a>? Which plugins should I use on my site? What are the must have plugins? I have created a blueprint of all the plugins and tools that I'm using. <a href="http://www.wpbeginner.com/blueprint/" title"Take a look at plugins I am using at WPBeginner" rel="friend">Take a look at plugins I'm using at WPBeginner</a>.
 
-If you like this plugin, then please leave a good rating. 
+If you like this plugin, then please leave a good rating.
 
 This plugin should work with most <a href="http://www.wpbeginner.com/wordpress-hosting/" title="Best WordPress Hosting" rel="friend">good WordPress hosting</a> providers however if you need support just ask the questions here (make sure you <a href="http://www.wpbeginner.com/beginners-guide/how-to-properly-ask-for-wordpress-support-and-get-it/" title="How to ask for WordPress support" rel="friend">ask your questions properly</a> if you want a response).
 

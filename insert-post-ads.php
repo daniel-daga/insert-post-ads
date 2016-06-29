@@ -1,18 +1,18 @@
 <?php
 /**
-* Plugin Name: Insert Post Ads
+* Plugin Name: Insert Post Ads Forks
 * Plugin URI: http://www.wpbeginner.com/
-* Version: 1.0.6
-* Author: WPBeginner
+* Version: 1.0.0
+* Author: WPBeginner / Daniel Grützmacher
 * Author URI: http://www.wpbeginner.com/
-* Description: Allows you to insert ads after paragraphs of your post content
+* Description: Allows you to insert ads after paragraphs of your post content. Forked by Daniel Grützmacher
 * License: GPL2
 */
 
 /*  Copyright 2014 WPBeginner
 
     This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 2, as 
+    it under the terms of the GNU General Public License, version 2, as
     published by the Free Software Foundation.
 
     This program is distributed in the hope that it will be useful,
@@ -36,10 +36,10 @@ class InsertPostAds {
 
 		// Plugin Details
         $this->plugin               = new stdClass;
-        $this->plugin->name         = 'insert-post-ads'; // Plugin Folder
-        $this->plugin->displayName  = 'Post Adverts'; // Plugin Name
+        $this->plugin->name         = 'insert-post-ads-dg-fork'; // Plugin Folder
+        $this->plugin->displayName  = 'Post Adverts - DG Fork'; // Plugin Name
         $this->plugin->posttype 	= 'insertpostads';
-        $this->plugin->version      = '1.0.6';
+        $this->plugin->version      = '1.0.0';
         $this->plugin->folder       = plugin_dir_path( __FILE__ );
         $this->plugin->url          = plugin_dir_url( __FILE__ );
 
@@ -47,21 +47,21 @@ class InsertPostAds {
         if (!class_exists('WPBeginnerDashboardWidget')) {
 			require_once($this->plugin->folder.'/_modules/dashboard/dashboard.php');
 		}
-		$this->dashboard = new WPBeginnerDashboardWidget($this->plugin); 
-		
+		$this->dashboard = new WPBeginnerDashboardWidget($this->plugin);
+
 		// Hooks
 		add_action('init', array( &$this, 'registerPostTypes'));
         add_action('admin_enqueue_scripts', array(&$this, 'adminScriptsAndCSS'));
         add_action('admin_menu', array(&$this, 'adminPanelsAndMetaBoxes'));
         add_action('plugins_loaded', array(&$this, 'loadLanguageFiles'));
         add_action('save_post', array(&$this, 'save'));
-        
+
         // Filters
 		add_filter('enter_title_here', array(&$this, 'changeTitlePlaceholder')); // Change title placeholder
-		add_filter('post_updated_messages', array(&$this, 'changeUpdatedMessages')); // Appropriate messages for the post type	
+		add_filter('post_updated_messages', array(&$this, 'changeUpdatedMessages')); // Appropriate messages for the post type
 		add_filter('the_content', array(&$this, 'checkAdvertsRequired'));
 	}
-	
+
 	/**
 	* Register Custom Post Type
 	*/
@@ -77,7 +77,7 @@ class InsertPostAds {
                 'view_item' => __('View Post Adverts'),
                 'search_items' => __('Search Post Adverts'),
                 'not_found' =>  __('No post adverts found'),
-                'not_found_in_trash' => __('No post adverts found in Trash'), 
+                'not_found_in_trash' => __('No post adverts found in Trash'),
                 'parent_item_colon' => ''
             ),
             'description' => 'Post Adverts',
@@ -93,7 +93,7 @@ class InsertPostAds {
             'has_archive' => false,
             'show_in_nav_menus' => false,
             'supports' => array('title'),
-        )); 
+        ));
 	}
 
 	/**
@@ -102,11 +102,11 @@ class InsertPostAds {
     function adminScriptsAndCSS() {
     	// JS
     	// wp_enqueue_script($this->plugin->name.'-admin', $this->plugin->url.'js/admin.js', array('jquery'), $this->plugin->version, true);
-    	        
+
     	// CSS
-        wp_enqueue_style($this->plugin->name.'-admin', $this->plugin->url.'css/admin.css', array(), $this->plugin->version); 
+        wp_enqueue_style($this->plugin->name.'-admin', $this->plugin->url.'css/admin.css', array(), $this->plugin->version);
     }
-	
+
 	/**
     * Register the plugin settings panel
     */
@@ -122,7 +122,7 @@ class InsertPostAds {
 				if ($postType->name == 'attachment') {
 					continue;
 				}
-				
+
 				// Skip our CPT
 				if ($postType->name == $this->plugin->posttype) {
 					continue;
@@ -130,9 +130,9 @@ class InsertPostAds {
 				add_meta_box('ipa_meta', __($this->plugin->displayName, $this->plugin->name), array( &$this, 'displayOptionsMetaBox'), $postType->name, 'normal', 'high');
 			}
 		}
-		
+
     }
-    
+
     /**
     * Output the Administration Panel
     * Save POSTed data from the Administration Panel into a WordPress option
@@ -146,21 +146,21 @@ class InsertPostAds {
 				$this->message = __('Post Advert Settings Saved.', $this->plugin->name);
 			}
         }
-        
+
         // Get latest settings
         $this->settings = get_option($this->plugin->name);
-        
+
 		// Load Settings Form
-        include_once(WP_PLUGIN_DIR.'/'.$this->plugin->name.'/views/settings.php');  
+        include_once(WP_PLUGIN_DIR.'/'.$this->plugin->name.'/views/settings.php');
     }
-    
+
     /**
 	* Loads plugin textdomain
 	*/
 	function loadLanguageFiles() {
 		load_plugin_textdomain($this->plugin->name, false, $this->plugin->name.'/languages/');
 	}
-	
+
 	/**
 	* Displays the meta box on the Custom Post Type
 	*
@@ -171,7 +171,7 @@ class InsertPostAds {
 		$adCode = get_post_meta($post->ID, '_ad_code', true);
 		$adPosition = get_post_meta($post->ID, '_ad_position', true);
 		$paragraphNumber = get_post_meta($post->ID, '_paragraph_number', true);
-		
+
 		// Nonce field
 		wp_nonce_field($this->plugin->name, $this->plugin->name.'_nonce');
 		?>
@@ -189,7 +189,7 @@ class InsertPostAds {
 		</p>
 		<?php
 	}
-	
+
 	/**
 	* Displays the meta box on Pages, Posts and CPTs
 	*
@@ -198,7 +198,7 @@ class InsertPostAds {
 	function displayOptionsMetaBox($post) {
 		// Get meta
 		$disable = get_post_meta($post->ID, '_ipa_disable_ads', true);
-		
+
 		// Nonce field
 		wp_nonce_field($this->plugin->name, $this->plugin->name.'_nonce');
 		?>
@@ -211,7 +211,7 @@ class InsertPostAds {
 		</p>
 		<?php
 	}
-	
+
 	/**
 	* Saves the meta box field data
 	*
@@ -220,26 +220,26 @@ class InsertPostAds {
 	function save($post_id) {
 		// Check if our nonce is set.
 		if (!isset($_POST[$this->plugin->name.'_nonce'])) {
-			return $post_id;	
+			return $post_id;
 		}
-		
+
 		// Verify that the nonce is valid.
 		if (!wp_verify_nonce($_POST[$this->plugin->name.'_nonce'], $this->plugin->name)) {
 			return $post_id;
 		}
-		
+
 		// Check the logged in user has permission to edit this post
 		if (!current_user_can('edit_post', $post_id)) {
 			return $post_id;
 		}
-	    
+
 		// OK to save meta data
 		if (isset($_POST['ipa_disable_ads'])) {
-			update_post_meta($post_id, '_ipa_disable_ads', $_POST['ipa_disable_ads']);	
+			update_post_meta($post_id, '_ipa_disable_ads', $_POST['ipa_disable_ads']);
 		} else {
 			delete_post_meta($post_id, '_ipa_disable_ads');
 		}
-		
+
 		if (isset($_POST['ad_code'])) {
 			update_post_meta($post_id, '_ad_code', $_POST['ad_code']);
 		}
@@ -250,7 +250,7 @@ class InsertPostAds {
 			update_post_meta($post_id, '_paragraph_number', $_POST['paragraph_number']);
 		}
 	}
-	
+
 	/**
 	* Changes the 'Enter title here' placeholder on the Ad Custom Post Type
 	*
@@ -265,7 +265,7 @@ class InsertPostAds {
 
 		return $title;
 	}
-	
+
 	/**
 	* Updates the saved, deleted, updated messages when saving an Ad Custom Post Type
 	*
@@ -283,13 +283,13 @@ class InsertPostAds {
 
 		return $messages;
 	}
-	
+
 	/**
 	* Checks if the current screen on the frontend needs advert(s) adding to it
 	*/
 	function checkAdvertsRequired($content) {
 		global $post;
-		
+
 		// Settings
 		$this->settings = get_option($this->plugin->name);
 		if (!is_array($this->settings)) {
@@ -298,7 +298,7 @@ class InsertPostAds {
 		if (count($this->settings) == 0) {
 			return $content;
 		}
-		
+
 		// Check if we are on a singular post type that's enabled
 		foreach ($this->settings as $postType=>$enabled) {
 			if (is_singular($postType)) {
@@ -309,10 +309,10 @@ class InsertPostAds {
 				}
 			}
 		}
-		
+
 		return $content;
 	}
-	
+
 	/**
 	* Inserts advert(s) into content
 	*
@@ -324,16 +324,16 @@ class InsertPostAds {
 			'post_type' => $this->plugin->posttype,
 			'post_status' => 'publish',
 			'posts_per_page' => -1,
-		));	
+		));
 		if ($ads->have_posts()) {
 			while ($ads->have_posts()) {
 				$ads->the_post();
-				
+
 				$adID = get_the_ID();
 				$adCode = get_post_meta($adID, '_ad_code', true);
 				$adPosition = get_post_meta($adID, '_ad_position', true);
 				$paragraphNumber = get_post_meta($adID, '_paragraph_number', true);
-				
+
 				switch ($adPosition) {
 					case 'top':
 						$content = $adCode.$content;
@@ -347,11 +347,11 @@ class InsertPostAds {
 				}
 			}
 		}
-		
+
 		wp_reset_postdata();
 		return $content;
 	}
-	
+
 	/**
 	* Insert something after a specific paragraph in some content.
 	*
@@ -380,6 +380,6 @@ class InsertPostAds {
 		return implode( '', $paragraphs );
 	}
 }
-		
+
 $insertPostAds = new InsertPostAds();
 ?>
