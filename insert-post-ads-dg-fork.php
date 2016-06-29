@@ -54,10 +54,12 @@ class InsertPostAds {
 
 		// Hooks
 		add_action('init', array( &$this, 'registerPostTypes'));
-        add_action('admin_enqueue_scripts', array(&$this, 'adminScriptsAndCSS'));
-        add_action('admin_menu', array(&$this, 'adminPanelsAndMetaBoxes'));
-        add_action('plugins_loaded', array(&$this, 'loadLanguageFiles'));
-        add_action('save_post', array(&$this, 'save'));
+    add_action('admin_enqueue_scripts', array(&$this, 'adminScriptsAndCSS'));
+    add_action('admin_menu', array(&$this, 'adminPanelsAndMetaBoxes'));
+    add_action('plugins_loaded', array(&$this, 'loadLanguageFiles'));
+    add_action('save_post', array(&$this, 'save'));
+
+    add_action('wp_enqueue_scripts', array(&$this, 'publicScripts'));
 
         // Filters
 		add_filter('enter_title_here', array(&$this, 'changeTitlePlaceholder')); // Change title placeholder
@@ -108,6 +110,10 @@ class InsertPostAds {
 
     	// CSS
         wp_enqueue_style($this->plugin->name.'-admin', $this->plugin->url.'css/admin.css', array(), $this->plugin->version);
+    }
+
+    function publicScripts() {
+      wp_enqueue_script($this->plugin->name . '-script', $this->plugin->url . 'js/post-ads.js', array(), $this->plugin->version);
     }
 
 	/**
@@ -355,7 +361,11 @@ class InsertPostAds {
 
       if ( ! empty( $paragraphs ) ) {
         foreach( $paragraphs as $paragraphNumber => $adCode_array ) {
-          $adCode = $adCode_array[ rand(0, ( count($adCode_array) - 1 ) ) ];
+          $adCode = '';
+          $display = 'display: none;';
+          foreach( $adCode_array as $adCode_element ) {
+            $adCode .= '<div class="insert-post-ads-wrapper" style="' . $display . '">' . $adCode_element . '</div>';
+          }
           $content = $this->insertAdAfterParagraph($adCode, $paragraphNumber, $content);
         }
       }
